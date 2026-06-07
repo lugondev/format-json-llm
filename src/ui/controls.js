@@ -1,4 +1,4 @@
-// Map nhãn delimiter -> ký tự thật cho @toon-format/toon
+// Map delimiter label -> the actual character for @toon-format/toon
 export const DELIMITERS = { comma: ',', tab: '\t', pipe: '|' };
 
 export function readEncodeOptions(root) {

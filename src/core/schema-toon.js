@@ -12,7 +12,7 @@ function isPlainObject(v) {
   return v !== null && typeof v === 'object' && !Array.isArray(v);
 }
 
-// Chữ ký kiểu cho một giá trị (không kèm tên key).
+// Type signature for a value (without its key name).
 function sig(value) {
   if (Array.isArray(value)) return arraySig(value);
   if (isPlainObject(value)) return `{${objectFields(value)}}`;

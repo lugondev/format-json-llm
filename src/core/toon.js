@@ -5,13 +5,13 @@ export function jsonToToon(jsonString, opts = {}) {
   try {
     value = JSON.parse(jsonString);
   } catch (e) {
-    return { ok: false, toon: '', error: `JSON không hợp lệ: ${e.message}` };
+    return { ok: false, toon: '', error: `Invalid JSON: ${e.message}` };
   }
   try {
     const toon = encode(value, opts);
     return { ok: true, toon, error: null };
   } catch (e) {
-    return { ok: false, toon: '', error: `Lỗi encode TOON: ${e.message}` };
+    return { ok: false, toon: '', error: `TOON encode error: ${e.message}` };
   }
 }
 
@@ -21,6 +21,6 @@ export function toonToJson(toonString, opts = {}) {
     return { ok: true, json: JSON.stringify(value, null, 2), value, error: null };
   } catch (e) {
     const msg = e instanceof ToonDecodeError ? e.message : String(e?.message ?? e);
-    return { ok: false, json: '', value: undefined, error: `Lỗi decode TOON: ${msg}` };
+    return { ok: false, json: '', value: undefined, error: `TOON decode error: ${msg}` };
   }
 }

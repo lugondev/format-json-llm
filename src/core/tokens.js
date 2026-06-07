@@ -5,7 +5,7 @@ export function countTokens(text) {
   try {
     return encodeTokens(text).length;
   } catch {
-    // Fallback ước lượng nếu tokenizer lỗi
+    // Rough estimate fallback if the tokenizer fails
     return Math.ceil(text.length / 4);
   }
 }

@@ -2,7 +2,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { initApp } from '../src/ui/app.js';
 
-// Đặt giá trị input rồi ép render ngay qua một sự kiện 'change' (không bị debounce).
+// Set the input value, then force an immediate render via a 'change' event (bypasses debounce).
 function typeInput(root, text) {
   root.querySelector('#input').value = text;
   root.querySelector('#indent').dispatchEvent(new Event('change'));
@@ -16,26 +16,26 @@ describe('UI integration', () => {
     initApp(root);
   });
 
-  it('dựng đủ các control và panel', () => {
+  it('builds all controls and panels', () => {
     expect(root.querySelector('#input')).toBeTruthy();
     expect(root.querySelector('#output')).toBeTruthy();
     expect(root.querySelectorAll('.tabs button').length).toBe(3);
   });
 
-  it('JSON -> TOON ở tab convert + cập nhật token bar', () => {
-    typeInput(root, JSON.stringify({ users: [{ id: 1, name: 'An' }, { id: 2, name: 'Bình' }] }));
+  it('JSON -> TOON on the convert tab + updates the token bar', () => {
+    typeInput(root, JSON.stringify({ users: [{ id: 1, name: 'Alice' }, { id: 2, name: 'Bob' }] }));
     expect(root.querySelector('#output').textContent).toContain('users[2]{id,name}:');
     expect(Number(root.querySelector('#jsonTokens').textContent)).toBeGreaterThan(0);
     expect(Number(root.querySelector('#toonTokens').textContent)).toBeGreaterThan(0);
   });
 
-  it('tab TOON Schema hiện chữ ký nén', () => {
-    typeInput(root, JSON.stringify({ users: [{ id: 1, name: 'An' }], total: 1 }));
+  it('TOON Schema tab shows the compact signature', () => {
+    typeInput(root, JSON.stringify({ users: [{ id: 1, name: 'Alice' }], total: 1 }));
     root.querySelector('.tabs button[data-tab="toonschema"]').dispatchEvent(new Event('click'));
     expect(root.querySelector('#output').textContent).toBe('users:[]{id:int,name:str}\ntotal:int');
   });
 
-  it('tab JSON Schema hiện schema 2020-12', () => {
+  it('JSON Schema tab shows a 2020-12 schema', () => {
     typeInput(root, JSON.stringify({ id: 1 }));
     root.querySelector('.tabs button[data-tab="jsonschema"]').dispatchEvent(new Event('click'));
     const out = JSON.parse(root.querySelector('#output').textContent);
@@ -43,22 +43,22 @@ describe('UI integration', () => {
     expect(out.properties.id).toEqual({ type: 'integer' });
   });
 
-  it('JSON sai cú pháp hiện lỗi ở panel input', () => {
+  it('malformed JSON shows an error in the input panel', () => {
     typeInput(root, '{ not json');
     expect(root.querySelector('#inputError').textContent).toMatch(/JSON/i);
     expect(root.querySelector('#output').textContent).toBe('');
   });
 
-  it('Đảo nguồn: JSON -> TOON, nguồn đổi sang toon, input thành TOON', () => {
+  it('swap: JSON -> TOON, source switches to toon, input becomes TOON', () => {
     typeInput(root, JSON.stringify({ a: [1, 2, 3] }));
     root.querySelector('#swap').dispatchEvent(new Event('click'));
     expect(root.querySelector('#source').value).toBe('toon');
     expect(root.querySelector('#input').value).toContain('a[3]:');
-    // sau swap, tab convert hiện JSON trở lại
+    // after swap, the convert tab shows JSON again
     expect(root.querySelector('#output').textContent).toContain('"a"');
   });
 
-  it('delimiter pipe ảnh hưởng output', () => {
+  it('pipe delimiter affects the output', () => {
     root.querySelector('#delimiter').value = 'pipe';
     typeInput(root, JSON.stringify({ a: [1, 2, 3] }));
     expect(root.querySelector('#output').textContent).toContain('1|2|3');

@@ -2,7 +2,7 @@ import { jsonToToon, toonToJson, toJsonSchema, toToonSchema, compareTokens } fro
 import { renderShell, setOutput, setError, setTokens } from './panels.js';
 import { readEncodeOptions, readDecodeOptions, debounce, copyText } from './controls.js';
 
-// Lấy về { value, json, toon, error } từ input theo nguồn hiện tại.
+// Derive { value, json, toon, error } from the input based on the current source.
 function normalize(root) {
   const source = root.querySelector('#source').value;
   const text = root.querySelector('#input').value;
@@ -21,7 +21,7 @@ function normalize(root) {
 export function initApp(root) {
   renderShell(root);
 
-  // Tab đang chọn là state cục bộ của mỗi instance app (không dùng biến module).
+  // The active tab is per-instance state (not a module-level variable).
   let activeTab = 'convert';
 
   function render() {
@@ -88,7 +88,7 @@ export function initApp(root) {
   root.querySelector('#copyOut').addEventListener('click', async () => {
     const ok = await copyText(root.querySelector('#output').textContent);
     const btn = root.querySelector('#copyOut');
-    btn.textContent = ok ? 'Đã copy ✓' : 'Lỗi copy';
+    btn.textContent = ok ? 'Copied ✓' : 'Copy failed';
     setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
   });
 
