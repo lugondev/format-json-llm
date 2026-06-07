@@ -30,10 +30,10 @@ function schemaKey(schema) {
 
 function arraySchema(arr) {
   if (arr.length === 0) return { type: 'array' };
-  const elementSchemas = arr.map(nodeSchema);
   const allObjects = arr.every((v) => v !== null && typeof v === 'object' && !Array.isArray(v));
   if (allObjects) return { type: 'array', items: mergeObjectSchemas(arr) };
 
+  const elementSchemas = arr.map(nodeSchema);
   const unique = [];
   const seen = new Set();
   for (const s of elementSchemas) {

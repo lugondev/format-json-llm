@@ -23,4 +23,12 @@ describe('toToonSchema', () => {
   it('null và mảng rỗng', () => {
     expect(toToonSchema({ note: null, items: [] })).toBe('note:null\nitems:[]');
   });
+
+  it('mảng của mảng đệ quy đúng kiểu', () => {
+    expect(toToonSchema({ m: [[1, 2], [3, 4]] })).toBe('m:int[][]');
+  });
+
+  it('mảng của object lồng đệ quy', () => {
+    expect(toToonSchema({ rows: [{ id: 1, tags: ['a'] }] })).toBe('rows:[]{id:int,tags:str[]}');
+  });
 });

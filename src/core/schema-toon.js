@@ -23,7 +23,7 @@ function arraySig(arr) {
   if (arr.length === 0) return '[]';
   const first = arr[0];
   if (isPlainObject(first)) return `[]{${objectFields(first)}}`;
-  return `${primType(first)}[]`;
+  return `${sig(first)}[]`;
 }
 
 function objectFields(obj) {
