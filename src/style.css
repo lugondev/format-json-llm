@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, sans-serif; color: #1c2333; background: #f5f6f8; }
+header { padding: 12px 16px; background: #11182a; color: #fff; }
+header h1 { margin: 0; font-size: 18px; }
+header p { margin: 4px 0 0; font-size: 12px; opacity: .75; }
+.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; padding: 10px 16px; background: #fff; border-bottom: 1px solid #e2e5ea; font-size: 13px; }
+.controls label { display: flex; gap: 4px; align-items: center; }
+.controls button { cursor: pointer; border: 1px solid #c3c9d4; background: #fff; border-radius: 6px; padding: 6px 10px; font-size: 13px; }
+.controls button.primary { background: #2b59ff; color: #fff; border-color: #2b59ff; }
+.workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 16px; }
+.panel { display: flex; flex-direction: column; background: #fff; border: 1px solid #e2e5ea; border-radius: 8px; overflow: hidden; }
+.panel-head { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #eef0f3; font-size: 13px; font-weight: 600; }
+.panel-head .tabs button { border: none; background: none; cursor: pointer; padding: 4px 8px; font-size: 12px; color: #5a6478; border-radius: 4px; }
+.panel-head .tabs button.active { background: #eef1ff; color: #2b59ff; }
+textarea, pre.output { flex: 1; min-height: 360px; margin: 0; padding: 12px; border: none; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; line-height: 1.5; white-space: pre; overflow: auto; }
+textarea { resize: none; outline: none; }
+pre.output { background: #fbfbfd; }
+.error { color: #c0392b; padding: 8px 12px; font-size: 12px; background: #fdecea; border-top: 1px solid #f5c6c0; white-space: pre-wrap; }
+.error:empty { display: none; }
+.tokenbar { display: flex; gap: 16px; padding: 8px 16px; font-size: 13px; background: #fff; border-top: 1px solid #e2e5ea; }
+.tokenbar strong { color: #2b59ff; }
+.copy-btn { font-size: 11px; padding: 2px 8px; }
