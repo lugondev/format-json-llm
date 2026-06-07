@@ -63,4 +63,16 @@ describe('UI integration', () => {
     typeInput(root, JSON.stringify({ a: [1, 2, 3] }));
     expect(root.querySelector('#output').textContent).toContain('1|2|3');
   });
+
+  it('re-initializing resets the active tab to convert (per-instance state)', () => {
+    // Switch to a schema tab on the first instance.
+    typeInput(root, JSON.stringify({ id: 1 }));
+    root.querySelector('.tabs button[data-tab="toonschema"]').dispatchEvent(new Event('click'));
+    expect(root.querySelector('#output').textContent).toBe('id:int');
+
+    // Re-init a fresh app into the same container; the tab must start back at convert.
+    initApp(root);
+    typeInput(root, JSON.stringify({ id: 1 }));
+    expect(root.querySelector('#output').textContent).toBe('id: 1'); // TOON, not the schema
+  });
 });

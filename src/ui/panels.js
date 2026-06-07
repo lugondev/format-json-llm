@@ -27,7 +27,7 @@ export function renderShell(root) {
     <div class="workspace">
       <div class="panel">
         <div class="panel-head"><span id="inputLabel">Input (JSON)</span></div>
-        <textarea id="input" placeholder="Paste JSON or TOON here..." spellcheck="false"></textarea>
+        <textarea id="input" aria-labelledby="inputLabel" placeholder="Paste JSON or TOON here..." spellcheck="false"></textarea>
         <div class="error" id="inputError"></div>
       </div>
       <div class="panel">
@@ -39,7 +39,7 @@ export function renderShell(root) {
           </div>
           <button class="copy-btn" id="copyOut">Copy</button>
         </div>
-        <pre class="output" id="output"></pre>
+        <pre class="output" id="output" aria-label="Output" tabindex="0"></pre>
         <div class="error" id="outputError"></div>
       </div>
     </div>
