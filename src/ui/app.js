@@ -2,8 +2,6 @@ import { jsonToToon, toonToJson, toJsonSchema, toToonSchema, compareTokens } fro
 import { renderShell, setOutput, setError, setTokens } from './panels.js';
 import { readEncodeOptions, readDecodeOptions, debounce, copyText } from './controls.js';
 
-let activeTab = 'convert';
-
 // Lấy về { value, json, toon, error } từ input theo nguồn hiện tại.
 function normalize(root) {
   const source = root.querySelector('#source').value;
@@ -20,40 +18,44 @@ function normalize(root) {
   return { value: dec.value, json: dec.json, toon: text };
 }
 
-function render(root) {
-  setError(root, 'inputError', '');
-  setError(root, 'outputError', '');
-  const data = normalize(root);
-
-  if (data?.empty) {
-    setOutput(root, '');
-    setTokens(root, { jsonTokens: 0, toonTokens: 0, savedPercent: 0 });
-    return;
-  }
-  if (data.error) {
-    setOutput(root, '');
-    setError(root, 'inputError', data.error);
-    return;
-  }
-
-  const source = root.querySelector('#source').value;
-  if (activeTab === 'convert') {
-    setOutput(root, source === 'json' ? data.toon : data.json);
-  } else if (activeTab === 'jsonschema') {
-    setOutput(root, JSON.stringify(toJsonSchema(data.value), null, 2));
-  } else {
-    setOutput(root, toToonSchema(data.value));
-  }
-  setTokens(root, compareTokens(data.json, data.toon));
-}
-
 export function initApp(root) {
   renderShell(root);
-  const rerender = debounce(() => render(root), 300);
+
+  // Tab đang chọn là state cục bộ của mỗi instance app (không dùng biến module).
+  let activeTab = 'convert';
+
+  function render() {
+    setError(root, 'inputError', '');
+    setError(root, 'outputError', '');
+    const data = normalize(root);
+
+    if (data?.empty) {
+      setOutput(root, '');
+      setTokens(root, { jsonTokens: 0, toonTokens: 0, savedPercent: 0 });
+      return;
+    }
+    if (data.error) {
+      setOutput(root, '');
+      setError(root, 'inputError', data.error);
+      return;
+    }
+
+    const source = root.querySelector('#source').value;
+    if (activeTab === 'convert') {
+      setOutput(root, source === 'json' ? data.toon : data.json);
+    } else if (activeTab === 'jsonschema') {
+      setOutput(root, JSON.stringify(toJsonSchema(data.value), null, 2));
+    } else {
+      setOutput(root, toToonSchema(data.value));
+    }
+    setTokens(root, compareTokens(data.json, data.toon));
+  }
+
+  const rerender = debounce(render, 300);
 
   root.querySelector('#input').addEventListener('input', rerender);
   for (const id of ['#source', '#delimiter', '#indent', '#strict', '#keyFolding']) {
-    root.querySelector(id).addEventListener('change', () => render(root));
+    root.querySelector(id).addEventListener('change', render);
   }
 
   root.querySelector('#source').addEventListener('change', (e) => {
@@ -64,7 +66,7 @@ export function initApp(root) {
     btn.addEventListener('click', () => {
       activeTab = btn.dataset.tab;
       root.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('active', b === btn));
-      render(root);
+      render();
     });
   });
 
@@ -80,7 +82,7 @@ export function initApp(root) {
       root.querySelector('#input').value = data.json;
     }
     root.querySelector('#inputLabel').textContent = `Input (${source.value.toUpperCase()})`;
-    render(root);
+    render();
   });
 
   root.querySelector('#copyOut').addEventListener('click', async () => {
@@ -90,5 +92,5 @@ export function initApp(root) {
     setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
   });
 
-  render(root);
+  render();
 }
