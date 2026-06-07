@@ -47,6 +47,7 @@ export function renderShell(root) {
       <span>JSON: <strong id="jsonTokens">0</strong> tokens</span>
       <span>TOON: <strong id="toonTokens">0</strong> tokens</span>
       <span>Saved: <strong id="savedPercent">0%</strong></span>
+      <a class="repo-link" href="https://github.com/lugondev/format-json-llm" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
     </div>
   `;
 }
